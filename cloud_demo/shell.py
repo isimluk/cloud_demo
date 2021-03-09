@@ -1,5 +1,6 @@
 from . import wizards
-
+from falconpy import oauth2 as FalconAuth
+import os
 
 banner = """
 CrowdStrike Cloud Demo Shell                                          |
@@ -40,5 +41,18 @@ def embed():
     ipshell.confirm_exit = False
     ipshell()
 
+
+falcon_client_id = os.getenv("FALCON_CLIENT_ID")
+falcon_client_secret = os.getenv("FALCON_CLIENT_SECRET")
+
+authorization = FalconAuth.OAuth2(creds={
+    'client_id': falcon_client_id,
+    'client_secret': falcon_client_secret
+})
+
+try:
+    token = authorization.token()["body"]["access_token"]
+except:
+    token = False
 
 embed()
